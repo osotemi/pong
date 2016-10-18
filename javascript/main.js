@@ -8,6 +8,8 @@ var singletonContext = require('./patterns/singleton/singletonContext');
 
 //Once the page has been completely loaded. Including images. We start the game
 window.onload=function(){
+    document.getElementById('light').style.display='block';
+    document.getElementById('fade').style.display='block'
     utils.checkCookie();
     var context_ = singletonContext.getInstance();
 
@@ -21,5 +23,5 @@ window.onload=function(){
         }
     };
 
-    window.addEventListener("keypress",startGame,false);
+    window.addEventListener("keypress",startGame,false);//utilizar callback con la funcion chaeckCookie
 };

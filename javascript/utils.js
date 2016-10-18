@@ -36,6 +36,7 @@ function clearSelection() {
     var username=getCookie("username");
     if (username!="") {
         alert("Welcome again " + username);
+        document.getElementById("player_name").innerHTML = username;
     } else {
         username = prompt("Please enter your name:", "");
         if (username != "" && username != null) {
@@ -45,4 +46,4 @@ function clearSelection() {
 }
 
  module.exports.clearSelection = clearSelection;
- module.exports.clearSelection = checkCookie;
+ module.exports.checkCookie = checkCookie;
