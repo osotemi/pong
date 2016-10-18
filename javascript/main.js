@@ -8,7 +8,7 @@ var singletonContext = require('./patterns/singleton/singletonContext');
 
 //Once the page has been completely loaded. Including images. We start the game
 window.onload=function(){
-
+    utils.checkCookie();
     var context_ = singletonContext.getInstance();
 
     var startGame=function(event){
