@@ -1,6 +1,9 @@
 /**
  *  Used to avoid image double click selection default behaviour
  */
+ var context = require('./context');
+
+
 function clearSelection() {
      if(document.selection && document.selection.empty) {
          document.selection.empty();
@@ -35,10 +38,13 @@ function clearSelection() {
  function checkCookie() {
     var username=getCookie("username");
     if (username!="") {
-        alert("Welcome again " + username);
+        alert("Welcome again " + username);//Subtituir por pantalla de
         document.getElementById("player_name").innerHTML = username;
     } else {
-        username = prompt("Please enter your name:", "");
+        //username = prompt("Please enter your name:", "");//I
+        if( context.validate.is_valid_form){
+          username = context.form_player.getElement("name");
+        }
         if (username != "" && username != null) {
             setCookie("username", username, 365);
         }

@@ -1,21 +1,53 @@
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="stylesheet" type="text/css" href="style/pong_style.css">
-<script type="text/javascript" src="bin/main.js"></script>
-</head>
-<body>
-  <div id="fade" class="overlay"></div>
-    <div id="light" class="modal">
+  <head>
+    <title>Pong Osotemi</title>
+    <meta name="author" content="Oscar Otero"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style/pong_style.css"/>
+    <script type="text/javascript" src="bin/main.js"></script>
+  </head>
+  <body>
+    <div id="fade" class="overlay"></div>
+      <div id="light" class="modal">
+        <form name="mortgage_form" method="POST" class="form-horizontal" id="player_form" onsubmit='return false;'>
+    	    <h2 class="bg-primary" style="padding:15px 15px 15px 55px;">Player info</h2>
+    	    <div class="row">
+    	       <div class="col-sm-6">
+              <fieldset>
+      		      <legend class="text-info">Player data</legend>
+      		      <div class="form-group required">
+      				    <label class="control-label col-sm-6">Name:</label>
+      				    <div class="col-sm-6" id="name_div">
+          					<input required pa-type="player_name" id="name" name="player_name" placeholder="Player name" type="text" class="form-control" />
+          				</div>
+          			</div>
 
+          			<div class="form-group required">
+          				<label class="control-label col-sm-6">Avatar image:</label>
+          				<div class="col-sm-6" id="avatar_div">
+          					<input required pa-type="image" id="avatar" name="avatar" placeholder="Select avatar" type="file" class="form-control" />
+          				</div>
+          			</div>
+              </fieldset>
+
+              <fieldset>
+                <legend class="text-info">Send Info</legend>
+                <label class="control-label col-sm-6">Press to send info: </label><br>
+                <input id="Submit" name="Submit" pa-enabled="player_form==valid" type="button" value="Submit player" onclick="" />
+
+              </fieldset>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-  
-  <div id="player_name"></div>
-  <img id="player_avatar"/>
-  <div id="score"></div>
-  <img id="bola" style="position:absolute" src="images/ball5.gif" />
-  <img id="stick" style="position:absolute" src="images/stick.png" />
-  <img id="stick2" style="position:absolute" src="images/stick.png" />
+    <div id="player_name"></div>
+    <img id="player_avatar"/>
+    <div id="score"></div>
+    <img id="bola" style="position:absolute" src="images/ball5.gif" />
+    <img id="stick" style="position:absolute" src="images/stick.png" />
+    <img id="stick2" style="position:absolute" src="images/stick.png" />
 
-</body>
+  </body>
 </html>
