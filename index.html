@@ -8,10 +8,16 @@
     <script type="text/javascript" src="bin/main.js"></script>
   </head>
   <body>
+    <div id="fade_welcome" class="overlay"></div>
+      <div id="light_welcome" class="modal">
+        <h1 id="messeg_welcome"></h1>
+        <button id="close" class="close-button" action="closeWelcome">X</button>
+      </div>
+    </div>
     <div id="fade" class="overlay"></div>
       <div id="light" class="modal">
+        <button id="close" class="close-button" action="closeForm">X</button>
         <form name="mortgage_form" method="POST" class="form-horizontal" id="player_form" onsubmit='return false;'>
-    	    <h2 class="bg-primary" style="padding:15px 15px 15px 55px;">Player info</h2>
     	    <div class="row">
     	       <div class="col-sm-6">
               <fieldset>
@@ -26,7 +32,8 @@
           			<div class="form-group required">
           				<label class="control-label col-sm-6">Avatar image:</label>
           				<div class="col-sm-6" id="avatar_div">
-          					<input required pa-type="image" id="avatar" name="avatar" placeholder="Select avatar" type="file" class="form-control" />
+          					<input required pa-type="image" id="avatar" name="avatar" placeholder="Select avatar" type="file" />
+                    <img src="" alt="player_avatar">
           				</div>
           			</div>
               </fieldset>
@@ -34,7 +41,7 @@
               <fieldset>
                 <legend class="text-info">Send Info</legend>
                 <label class="control-label col-sm-6">Press to send info: </label><br>
-                <input id="Submit" name="Submit" pa-enabled="player_form==valid" type="button" value="Submit player" onclick="" />
+                <input id="Submit" name="Submit" pa-enabled="player_form==valid" type="button" value="Submit player" class="btn btn-default" onclick="" />
 
               </fieldset>
             </div>

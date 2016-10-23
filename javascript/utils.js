@@ -39,16 +39,29 @@ function clearSelection() {
     var username=getCookie("username");
     if (username!="") {
         alert("Welcome again " + username);//Subtituir por pantalla de
+        document.getElementById('light_welcome').style.display='block';
+        document.getElementById('fade_welcome').style.display='block';
         document.getElementById("player_name").innerHTML = username;
     } else {
+        document.getElementById('light').style.display='block';
+        document.getElementById('fade').style.display='block';
         //username = prompt("Please enter your name:", "");//I
         if( context.validate.is_valid_form){
           username = context.form_player.getElement("name");
+          setCookie("username", username, 365);
+          document.getElementById('light').style.display='none';
+          document.getElementById('fade').style.display='none';
         }
         if (username != "" && username != null) {
+            username="player 1";
             setCookie("username", username, 365);
         }
     }
+}
+
+function closeWelcome(){
+  document.getElementById('light_welcome').style.display='none';
+  document.getElementById('fade_welcome').style.display='none';
 }
 
  module.exports.clearSelection = clearSelection;
