@@ -40,7 +40,7 @@ function clearSelection() {
     var player1_name = document.getElementById("player1_name");//get canvas
     if (username!="" && username != null) {
         //alert("Welcome again " + username);//Subtituir por pantalla de
-        canvas.player1_name.textContent = username;
+        player1_name.textContent = username;
         //canvas.avatar
     } else {
         //username = prompt("Please enter your name:", "");//I
@@ -54,7 +54,7 @@ function clearSelection() {
 function switchInitModal (){
     var username = name || getCookie("username");
     if (username!="") {
-        openModalWelcome();
+        openModalWelcome( username );
 
         //Set avatar
         return true;
@@ -88,19 +88,19 @@ function closeModalForm(){
   checkCookie();
 }
 
-function openModalWelcome(){
+function openModalWelcome( username ){
   document.getElementById('light').style.display='none';
   document.getElementById('fade').style.display='none';
   document.getElementById('light_welcome').style.display='block';
   document.getElementById('fade_welcome').style.display='block';
-
+  document.getElementById('messeg_welcome').textContent = "Welcome again " + username;
+  //setCanvas
 }
 
 function closeModalWelcome(){
   document.getElementById('light_welcome').style.display='none';
   document.getElementById('fade_welcome').style.display='none';
   checkCookie();
-  window.addEventListener("keypress",startGame,false);
 }
 
 

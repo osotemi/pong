@@ -37,9 +37,15 @@
 }
 
 .game-canvas{
-  position: relative;
-  text-align: center;
-  height: auto;
-  width: 15%;
+  height: 15%;
+  width: 100%;
   padding-top: 2%;
+}
+
+#light_welcome{
+  text-align: center;
+}
+
+#close_welcome{
+  margin-bottom: 5%;   
 }

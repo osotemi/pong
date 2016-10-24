@@ -25,12 +25,21 @@ window.onload=function(){
       window.addEventListener("keypress",startGame,false);
     };
 
+    var closeWelcome = function(){
+      utils.closeModalWelcome();
+      window.addEventListener("keypress",startGame,false);
+    }
+
+    var onSubmit = function(){
+      utils.getPlayerData(context_);
+    }
+
     if(utils.switchInitModal()){//Cookie allready exist
-      document.getElementById("close_welcome").onclick = utils.closeModalWelcome;
+      document.getElementById("close_welcome").onclick = closeWelcome;
     }
     else{
       document.getElementById("close_form").onclick = closeForm;
-      document.getElementById("Submit").onclick = function(){utils.getPlayerData(context_);};
+      document.getElementById("Submit").onclick = onSubmit;
     }
 
     //utilizar callback con la funcion chaeckCookie
