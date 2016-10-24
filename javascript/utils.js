@@ -33,7 +33,7 @@ function clearSelection() {
      }
      return "";
  }
-
+/*
  function checkCookie(name, avatar) {
     var username= name || getCookie("username");
     var avatar = avatar;// || getAvatar
@@ -50,8 +50,8 @@ function clearSelection() {
         }
     }
 }
-
-function switchInitModal (){
+*/
+function checkCookie(){
     var username = name || getCookie("username");
     if (username!="") {
         openModalWelcome( username );
@@ -100,6 +100,25 @@ function load(){
     avatar_elem.src = "data:image/png;base64," + avatar_stored;
 }
 
+function drawScore(p1_name, score1, score2, p2_name, p1_avatar, p2_avatar){
+    //p1_name, p1_avatar, p2_name, p2_avatar
+    //Viewport Width
+    var vpWidth=window.innerWidth	|| document.documentElement.clientWidth
+		|| document.body.clientWidth;
+	  //Viewport Width
+	  var vpHeight=window.innerHeight || document.documentElement.clientHeight
+		|| document.body.clientHeight;
+    var canvas = document.getElementById('canvas_score');
+    canvas.width=vpWidth-((vpWidth/100)*20);
+    canvas.height=vpHeight-((vpHeight/100)*80);
+    var context = canvas.getContext('2d');
+
+    var fontsize=canvas.height/4;
+    context.font = 'bolder '+fontsize+'pt Helvetica';
+    context.fillStyle = 'blue';
+    context.fillText(p1_name + ' ' + score1 + ' - ' + score2 + ' ' + p2_name , ((vpWidth/100)*21), (vpHeight/20));
+}
+
 function openModalForm(){
   document.getElementById('light_welcome').style.display='none';
   document.getElementById('fade_welcome').style.display='none';
@@ -111,7 +130,7 @@ function openModalForm(){
 function closeModalForm(){
   document.getElementById('light').style.display='none';
   document.getElementById('fade').style.display='none';
-  checkCookie();
+  //checkCookie();
 }
 
 function openModalWelcome( username ){
@@ -121,19 +140,21 @@ function openModalWelcome( username ){
   document.getElementById('fade_welcome').style.display='block';
   document.getElementById('messeg_welcome').textContent = "Welcome again " + username;
   load();
-  //setCanvas
 }
 
 function closeModalWelcome(){
   document.getElementById('light_welcome').style.display='none';
   document.getElementById('fade_welcome').style.display='none';
-  checkCookie();
+  //checkCookie();
+  p1_name = getCookie("username");
+  p2_name = "player2";
+  drawScore(p1_name, 0, 0, p2_name);
 }
 
 
 
 module.exports.clearSelection = clearSelection;
-module.exports.switchInitModal = switchInitModal;
+module.exports.checkCookie = checkCookie;
 module.exports.closeModalWelcome = closeModalWelcome;
 module.exports.closeModalForm = closeModalForm;
 module.exports.getPlayerData = getPlayerData;

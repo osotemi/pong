@@ -34,7 +34,7 @@ window.onload=function(){
       utils.getPlayerData(context_);
     }
 
-    if(utils.switchInitModal()){//Cookie allready exist
+    if(utils.checkCookie()){//Cookie allready exist
       document.getElementById("close_welcome").onclick = closeWelcome;
     }
     else{//Display form
