@@ -112,6 +112,10 @@ function drawScore(p1_name, score1, score2, p2_name, p1_avatar, p2_avatar){
     canvas.width=vpWidth-((vpWidth/100)*20);
     canvas.height=vpHeight-((vpHeight/100)*80);
     var context = canvas.getContext('2d');
+    var avatar_img = localStorage.getItem('player_avatar');
+    var p1_avatar_img = new Image();
+    p1_avatar_img.src = "data:image/png;base64," + avatar_img;
+    context.drawImage(p1_avatar_img, (((vpWidth/100)*21) - p1_avatar_img.width) ,0);
 
     var fontsize=canvas.height/4;
     context.font = 'bolder '+fontsize+'pt Helvetica';
