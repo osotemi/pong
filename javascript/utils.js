@@ -70,7 +70,8 @@ function getPlayerData(context){
     var username = document.getElementById("name").value;
     setCookie("username", username, 365);
     //get image/save image
-
+    save();
+    closeModalForm();
   }
 }
 //Canvas utils
@@ -88,7 +89,15 @@ function getBase64Image(img) {
 }
 
 function save(){
-    var player_avatar = document.getElementById('player_avatar');
+    var player_avatar_elem = document.getElementById('player_avatar');
+    player_avatar = getBase64Image( player_avatar );
+    localStorage.setItem("player_avatar", player_avatar);
+}
+
+function load(){
+    var avatar_stored = localStorage.getItem('player_avatar');
+    avatar_elem = document.getElementById('welcome_avatar');
+    avatar_elem.src = "data:image/png;base64," + avatar_stored;
 }
 
 function openModalForm(){
@@ -111,6 +120,7 @@ function openModalWelcome( username ){
   document.getElementById('light_welcome').style.display='block';
   document.getElementById('fade_welcome').style.display='block';
   document.getElementById('messeg_welcome').textContent = "Welcome again " + username;
+  load();
   //setCanvas
 }
 

@@ -97,6 +97,7 @@ Form.prototype.notifyEventForm = function(){
 };
 
 Form.prototype.init = function(){
+  var context = this.context;
   //Set focus on name
   this.form_elem.name.focus();
 }

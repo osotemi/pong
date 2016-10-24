@@ -75,11 +75,11 @@ Validator.prototype.paTypeValidate = function( pattern ){
 Validator.prototype.check = function( is_valid ){
   switch (this.current_element.id) {
     case "name":
-      this.validResultFields.valid_incoming = is_valid;
+      this.validRequired.valid_name = is_valid;
       this.change_result_field = true;
       break;
     case "avatar":
-      this.validResultFields.valid_capital = is_valid;
+      this.validRequired.valid_avatar = is_valid;
       this.change_result_field = true;
       break;
 
@@ -93,7 +93,7 @@ Validator.prototype.checkEnableResult = function(){
   var opt = "";
   this.change_result_field = true;
   this.enabled_result = true;
-  for ( var i in this.validResultFields ) {
+  for ( var i in this.validRequired ) {
       opt = this.validResultFields[i];
       if ( opt === false ) {
         this.enabled_result = false;
@@ -122,10 +122,11 @@ Validator.prototype.validFormResult = function(){
 Validator.prototype.switchTypeValidate = function(){
   //patterns
   var text_pattern = /^[\d\w]{2,50}$/;
+  var avatar_URL_pattern = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 
   switch (this.current_type) {
     case "avatar":
-      this.check(this.paTypeValidate( money_pattern ));
+      this.check(this.paTypeValidate( avatar_URL_pattern ));
       if( this.current_errorType == "PATTERN" ){
         this.current_errorMessege = "Money must be a number";
       }

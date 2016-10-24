@@ -40,6 +40,7 @@ window.onload=function(){
     else{//Display form
       document.getElementById("close_form").onclick = closeForm;
       document.getElementById("avatar").onchange = context_.form_player.inputFile;
+      document.getElementById('name').onblur = context_.validate.check;
       document.getElementById("Submit").onclick = onSubmit;
     }
 
