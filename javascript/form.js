@@ -80,13 +80,17 @@ Form.prototype.removeError = function( error_type, error_msage ){
   }
 };
 
+Form.prototype.inputFile = function(){
+  document.getElementById('player_avatar').src = window.URL.createObjectURL(this.files[0]);
+};
+
 Form.prototype.submitForm = function(){
   this.context.validator_.validFormResult();
   if( this.context.validator_.is_valid_form ){
     return true;
   }
   return false;
-}
+};
 
 Form.prototype.notifyEventForm = function(){
     this.Notify(this);

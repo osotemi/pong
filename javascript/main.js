@@ -37,8 +37,9 @@ window.onload=function(){
     if(utils.switchInitModal()){//Cookie allready exist
       document.getElementById("close_welcome").onclick = closeWelcome;
     }
-    else{
+    else{//Display form
       document.getElementById("close_form").onclick = closeForm;
+      document.getElementById("avatar").onchange = context_.form_player.inputFile;
       document.getElementById("Submit").onclick = onSubmit;
     }
 
