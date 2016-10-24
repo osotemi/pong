@@ -11,13 +11,13 @@
     <div id="fade_welcome" class="overlay"></div>
       <div id="light_welcome" class="modal">
         <h1 id="messeg_welcome"></h1>
-        <button id="close" class="close-button" action="closeWelcome">X</button>
+        <button id="close_welcome" class="close-button" action="closeWelcome">X</button>
       </div>
     </div>
     <div id="fade" class="overlay"></div>
       <div id="light" class="modal">
-        <button id="close" class="close-button" action="closeForm">X</button>
-        <form name="mortgage_form" method="POST" class="form-horizontal" id="player_form" onsubmit='return false;'>
+        <button id="close_form" class="close-button" action="closeForm">X</button>
+        <form name="player_form" method="POST" class="form-horizontal" id="player_form" onsubmit='return false;'>
     	    <div class="row">
     	       <div class="col-sm-6">
               <fieldset>
@@ -49,9 +49,14 @@
         </form>
       </div>
     </div>
-    <div id="player_name"></div>
-    <img id="player_avatar"/>
-    <div id="score"></div>
+    <canvas id="canvas_score" class="game-canvas">
+      <div id="player1_name"></div>
+      <img id="player1_avatar"/>
+      <div id="score1"></div>
+      <div id="score2"></div>
+      <img id="player2_avatar"/>
+      <div id="player2_name"></div>
+    </canvas>
     <img id="bola" style="position:absolute" src="images/ball5.gif" />
     <img id="stick" style="position:absolute" src="images/stick.png" />
     <img id="stick2" style="position:absolute" src="images/stick.png" />

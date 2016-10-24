@@ -1,11 +1,11 @@
 /*
- * Validator prototype
- *
- * @constructor
- * @this {Stick}
- *
- */
- var withObserver = require('./patterns/observer/Observer');
+* Validator prototype
+*
+* @constructor
+* @this {Stick}
+*
+*/
+var withObserver = require('./patterns/observer/Observer');
 
 function Validator( context_ ){
   this.valid = "";
@@ -27,7 +27,7 @@ function Validator( context_ ){
 
   withObserver.call(Validator.prototype);
   //We enroll stick as a ball observer
-	this.context.form_.AddObserver(this);
+	this.context.form_player.AddObserver(this);
 
   this.Update = function( form ){
     this.current_element = form.active_input;
@@ -139,3 +139,5 @@ Validator.prototype.switchTypeValidate = function(){
   }
   this.checkEnableResult();
 };
+
+module.exports = Validator;

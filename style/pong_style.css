@@ -31,7 +31,15 @@
 }
 .close-button{
   height: auto;
-  text-align: right;
+  text-align: right !important;
   font-weight: bold;
-  font-size: 16px;    
+  font-size: 16px;
+}
+
+.game-canvas{
+  position: relative;
+  text-align: center;
+  height: auto;
+  width: 15%;
+  padding-top: 2%;
 }

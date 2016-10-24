@@ -8,7 +8,6 @@ var singletonContext = require('./patterns/singleton/singletonContext');
 
 //Once the page has been completely loaded. Including images. We start the game
 window.onload=function(){
-    utils.checkCookie();
     var context_ = singletonContext.getInstance();
 
     var startGame=function(event){
@@ -21,5 +20,18 @@ window.onload=function(){
         }
     };
 
-    window.addEventListener("keypress",startGame,false);//utilizar callback con la funcion chaeckCookie
+    var closeForm = function(){
+      utils.closeModalForm();
+      window.addEventListener("keypress",startGame,false);
+    };
+
+    if(utils.switchInitModal()){//Cookie allready exist
+      document.getElementById("close_welcome").onclick = utils.closeModalWelcome;
+    }
+    else{
+      document.getElementById("close_form").onclick = closeForm;
+      document.getElementById("Submit").onclick = function(){utils.getPlayerData(context_);};
+    }
+
+    //utilizar callback con la funcion chaeckCookie
 };

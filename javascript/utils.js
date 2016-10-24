@@ -1,8 +1,7 @@
 /**
  *  Used to avoid image double click selection default behaviour
  */
- var context = require('./context');
-
+var context = require('./context');
 
 function clearSelection() {
      if(document.selection && document.selection.empty) {
@@ -35,34 +34,80 @@ function clearSelection() {
      return "";
  }
 
- function checkCookie() {
-    var username=getCookie("username");
-    if (username!="") {
-        alert("Welcome again " + username);//Subtituir por pantalla de
-        document.getElementById('light_welcome').style.display='block';
-        document.getElementById('fade_welcome').style.display='block';
-        document.getElementById("player_name").innerHTML = username;
+ function checkCookie(name, avatar) {
+    var username= name || getCookie("username");
+    var avatar = avatar;// || getAvatar
+    var player1_name = document.getElementById("player1_name");//get canvas
+    if (username!="" && username != null) {
+        //alert("Welcome again " + username);//Subtituir por pantalla de
+        canvas.player1_name.textContent = username;
+        //canvas.avatar
     } else {
-        document.getElementById('light').style.display='block';
-        document.getElementById('fade').style.display='block';
         //username = prompt("Please enter your name:", "");//I
-        if( context.validate.is_valid_form){
-          username = context.form_player.getElement("name");
-          setCookie("username", username, 365);
-          document.getElementById('light').style.display='none';
-          document.getElementById('fade').style.display='none';
-        }
-        if (username != "" && username != null) {
+        if (username === "" ||  username == NULL) {
             username="player 1";
-            setCookie("username", username, 365);
+            player1_name.textContent = username;
         }
     }
 }
 
-function closeWelcome(){
-  document.getElementById('light_welcome').style.display='none';
-  document.getElementById('fade_welcome').style.display='none';
+function switchInitModal (){
+    var username = name || getCookie("username");
+    if (username!="") {
+        openModalWelcome();
+
+        //Set avatar
+        return true;
+    } else {
+        openModalForm();
+        return false;
+    }
 }
 
- module.exports.clearSelection = clearSelection;
- module.exports.checkCookie = checkCookie;
+function getPlayerData(context){
+
+  if(context.form_player.submitForm){
+    var username = document.getElementById("name").value;
+    setCookie("username", username, 365);
+    //get image/save image
+
+  }
+}
+
+function openModalForm(){
+  document.getElementById('light_welcome').style.display='none';
+  document.getElementById('fade_welcome').style.display='none';
+  document.getElementById('light').style.display='block';
+  document.getElementById('fade').style.display='block';
+
+}
+
+function closeModalForm(){
+  document.getElementById('light').style.display='none';
+  document.getElementById('fade').style.display='none';
+  checkCookie();
+}
+
+function openModalWelcome(){
+  document.getElementById('light').style.display='none';
+  document.getElementById('fade').style.display='none';
+  document.getElementById('light_welcome').style.display='block';
+  document.getElementById('fade_welcome').style.display='block';
+
+}
+
+function closeModalWelcome(){
+  document.getElementById('light_welcome').style.display='none';
+  document.getElementById('fade_welcome').style.display='none';
+  checkCookie();
+  window.addEventListener("keypress",startGame,false);
+}
+
+
+
+module.exports.clearSelection = clearSelection;
+module.exports.switchInitModal = switchInitModal;
+module.exports.closeModalWelcome = closeModalWelcome;
+module.exports.closeModalForm = closeModalForm;
+module.exports.getPlayerData = getPlayerData;
+//module.exports. =
