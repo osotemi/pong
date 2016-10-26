@@ -64,15 +64,31 @@ function checkCookie(){
     }
 }
 
+////From functions
+function inputFile(){
+  document.getElementById('player_avatar').src = window.URL.createObjectURL(this.files[0]);
+}
+
+function inputName(){
+  var text_pattern = /^[\w]{2,50}$/;
+  var username = document.getElementById("name").value;
+
+  if(text_pattern.test(username)){
+    setCookie("username", username, 365);
+    return true;
+  }
+  else if(username == ""){//paint error
+    return false;
+  }
+
+}
+
 function getPlayerData(context){
 
-  if(context.form_player.submitForm){
-    var username = document.getElementById("name").value;
-    setCookie("username", username, 365);
-    //get image/save image
-    save();
-    closeModalForm();
-  }
+  var username = inputName();
+  //get image/save image
+  save();
+  closeModalForm();
 }
 //Canvas utils
 function getBase64Image(img) {
@@ -90,18 +106,30 @@ function getBase64Image(img) {
 
 function save(){
     var player_avatar_elem = document.getElementById('player_avatar');
-    player_avatar = getBase64Image( player_avatar );
+    player_avatar = getBase64Image( player_avatar_elem );
     localStorage.setItem("player_avatar", player_avatar);
 }
 
-function load(){
-    var avatar_stored = localStorage.getItem('player_avatar');
-    avatar_elem = document.getElementById('welcome_avatar');
-    avatar_elem.src = "data:image/png;base64," + avatar_stored;
+//load image avatar form datastorage and load it on selected element
+function load( element ){
+    var avatar_stored = localStorage.getItem(element);
+    if(avatar_stored!==""){
+      avatar_elem = document.getElementById( element );
+      avatar_elem.src = "data:image/png;base64," + avatar_stored;
+    }
+    else{
+      //load default avatar
+    }
+}
+//Draw the score,
+function loadCanvas(){
+  var p1_name = getCookie("username") || "player1";
+  var p2_name = "player2";
+  var avatar_img = localStorage.getItem('player_avatar');
+  drawScore( 0, 0, p1_name, p2_name, avatar_img);
 }
 
-function drawScore(p1_name, score1, score2, p2_name, p1_avatar, p2_avatar){
-    //p1_name, p1_avatar, p2_name, p2_avatar
+function drawScore(score1, score2, p1_name, p2_name, p1_avatar, p2_avatar){
     //Viewport Width
     var vpWidth=window.innerWidth	|| document.documentElement.clientWidth
 		|| document.body.clientWidth;
@@ -111,16 +139,37 @@ function drawScore(p1_name, score1, score2, p2_name, p1_avatar, p2_avatar){
     var canvas = document.getElementById('canvas_score');
     canvas.width=vpWidth-((vpWidth/100)*20);
     canvas.height=vpHeight-((vpHeight/100)*80);
+    var fontsize=canvas.height/4;
     var context = canvas.getContext('2d');
-    var avatar_img = localStorage.getItem('player_avatar');
-    var p1_avatar_img = new Image();
-    p1_avatar_img.src = "data:image/png;base64," + avatar_img;
+
+    var p1_avatar_img = new Image("images/default_avatar.png");
+    var p2_avatar_img = new Image();
+    p1_avatar_img.width = (vpHeight/20);
+    p1_avatar_img.height = (vpHeight/20);
+    p2_avatar_img.width = (vpHeight/20);
+    p2_avatar_img.height = (vpHeight/20);
+
+    if(!p1_avatar){
+        //p1_avatar_img.src = ;
+        var avatar_img = getBase64Image( p1_avatar_img );
+        p1_avatar_img.src = "data:image/png;base64," + avatar_img;
+    }
+    else{
+      p1_avatar_img.src = "data:image/png;base64," + p1_avatar;
+    }
+
+
     context.drawImage(p1_avatar_img, (((vpWidth/100)*21) - p1_avatar_img.width) ,0);
 
-    var fontsize=canvas.height/4;
     context.font = 'bolder '+fontsize+'pt Helvetica';
     context.fillStyle = 'blue';
     context.fillText(p1_name + ' ' + score1 + ' - ' + score2 + ' ' + p2_name , ((vpWidth/100)*21), (vpHeight/20));
+    /*
+    p2_avatar_img.src = "images/default_avatar.png";
+    avatar_img = getBase64Image( p2_avatar_img );
+    p2_avatar_img.src = "data:image/png;base64," + avatar_img;
+    context.drawImage(p2_avatar_img, (((vpWidth/100)*21) - p1_avatar_img.width) ,0);
+    */
 }
 
 function openModalForm(){
@@ -134,7 +183,7 @@ function openModalForm(){
 function closeModalForm(){
   document.getElementById('light').style.display='none';
   document.getElementById('fade').style.display='none';
-  //checkCookie();
+  loadCanvas();
 }
 
 function openModalWelcome( username ){
@@ -142,17 +191,15 @@ function openModalWelcome( username ){
   document.getElementById('fade').style.display='none';
   document.getElementById('light_welcome').style.display='block';
   document.getElementById('fade_welcome').style.display='block';
+  //Draw modal welcome
   document.getElementById('messeg_welcome').textContent = "Welcome again " + username;
-  load();
+  load("player_avatar");
 }
 
 function closeModalWelcome(){
   document.getElementById('light_welcome').style.display='none';
   document.getElementById('fade_welcome').style.display='none';
-  //checkCookie();
-  p1_name = getCookie("username");
-  p2_name = "player2";
-  drawScore(p1_name, 0, 0, p2_name);
+  loadCanvas();
 }
 
 
@@ -162,4 +209,5 @@ module.exports.checkCookie = checkCookie;
 module.exports.closeModalWelcome = closeModalWelcome;
 module.exports.closeModalForm = closeModalForm;
 module.exports.getPlayerData = getPlayerData;
+module.exports.inputFile = inputFile;
 //module.exports. =

@@ -9,8 +9,6 @@
 
 var artifact = require('./artifact');
 var stick = require('./stick');
-var form = require('./form');
-var validator = require('./validator');
 
 function Context(){
   this.vpWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
@@ -20,8 +18,6 @@ function Context(){
   this.ball = new artifact("bola",this);
   this.stick = new stick("stick","left",this);
   this.stick2 = new stick("stick2","right",this,true);
-  this.form_player = new form("player_form", this);
-  this.validate = new validator( this );
   //We put ball in the middle of the screen
   this.ball.locate((this.vpWidth/2)-this.ball.imgObj.width,(this.vpHeight/2)-this.ball.imgObj.height);  //Posicionem pilota al mig
 }

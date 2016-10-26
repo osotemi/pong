@@ -30,6 +30,7 @@
      overflow: auto;
 }
 .close-button{
+  position: relative;
   height: auto;
   text-align: right !important;
   font-weight: bold;
@@ -47,5 +48,5 @@
 }
 
 #close_welcome{
-  margin-bottom: 5%;   
+  margin-bottom: 5%;
 }

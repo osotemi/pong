@@ -32,6 +32,7 @@ window.onload=function(){
 
     var onSubmit = function(){
       utils.getPlayerData(context_);
+      window.addEventListener("keypress",startGame,false);
     }
 
     if(utils.checkCookie()){//Cookie allready exist
@@ -39,10 +40,10 @@ window.onload=function(){
     }
     else{//Display form
       document.getElementById("close_form").onclick = closeForm;
-      document.getElementById("avatar").onchange = context_.form_player.inputFile;
-      document.getElementById('name').onblur = context_.validate.check;
+      document.getElementById("avatar").onchange = utils.inputFile;
+      document.getElementById("name").onblur = utils.inputName;
       document.getElementById("Submit").onclick = onSubmit;
     }
 
-    //utilizar callback con la funcion chaeckCookie
+    //utilizar callback con la funcion checkCookie
 };
