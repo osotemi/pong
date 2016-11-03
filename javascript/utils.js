@@ -44,10 +44,11 @@ function showPlayerProfile(){
     nicknameElement.innerHTML= user;
     var dataImage = localStorage.getItem('imgData');
     if (dataImage){
-      var profileImg=document.createElement("img");
+      var profileImg=document.createElement("img");  
       profileImg.src = "data:image/png;base64," + dataImage;
       profileImg.width=48;
       profileImg.height=64;
+
       nicknameElement.parentNode.insertBefore(profileImg,nicknameElement);
     }
     return true;
@@ -95,33 +96,56 @@ function checkCookie(addGameKeyBindings) {
     document.getElementById("playerRight").innerHTML= "Computer";
 }
 
-function getBase64Image(img) {
+function getBase64Image(img, final_width, final_height) {
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
     canvas.height = img.height;
 
     var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
+
+    canvas.width = final_width;
+    canvas.height = final_height;
+
+    ctx.drawImage(img, 0, 0,final_width, final_height);
+    //Image riseze bug solution
 
     var dataURL = canvas.toDataURL("image/jpg");
 
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
+/*
+function drawCanvas(img_src){
+  var p1_avatar_img = new Image(img_src);
+  var avatar_img = getBase64Image( p1_avatar_img );
 
+  p1_avatar_img.src = "data:image/png;base64," + avatar_img;
+
+  var canvas = document.createElement("canvas");
+  var context = canvas.getContext('2d');
+  profileImg.width=48;
+  profileImg.height=64;
+
+  context.drawImage(p1_avatar_img, (((vpWidth/100)*21) - p1_avatar_img.width) ,0);
+}
+*/
 function save(){
   var bannerImage = document.getElementById('blah');
-  var imgData = getBase64Image(bannerImage);
+  var imgData = getBase64Image(bannerImage, 48, 64);
   localStorage.setItem("imgData", imgData);
 }
 
 function readURL(input) {
+  var img_element = document.getElementById('blah');
   if (input.files && input.files[0]) {
-      document.getElementById('blah').style.display="block";
+      img_element.style.display="block";
       var reader = new FileReader();
       reader.onload = function (e) {
+        img_element.style.width=48;
+        img_element.style.height=64;
         document.getElementById("blah").src=e.target.result;
-          //$('#blah').attr('src', e.target.result);
-          save();
+        //$('#blah').attr('src', e.target.result);
+        save();
+
       };
       reader.readAsDataURL(input.files[0]);
   }

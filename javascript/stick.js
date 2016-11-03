@@ -21,6 +21,10 @@ function Stick(id_stick,side,context,autopilot) {
   this.imgObj.height = this.context.vpHeight*0.2;
   this.side=="left"?this.imgObj.style.left=this.gap+'px':this.imgObj.style.left=this.context.vpWidth-this.imgObj.width-this.gap;
 
+  //New variables to calculate ball bouncin
+  this.lastY_position = "";
+  this.velocity = 0;
+
   var self = this;
   //We inherit from observer using this functional mixin
   withObserver.call(Stick.prototype);
@@ -39,8 +43,9 @@ function Stick(id_stick,side,context,autopilot) {
   ///As an Observer we should implement this mandatory method. Called
   //everytime the object we observe (in this case ball) call to Notify Subject metthod
   this.Update = function (ball){
-
+      //ball.locate();
       var ballPosition = ball.getPosition();
+
       var stickPosition = this.getPosition();
 
       if (this.autopilot) this.locate(stickPosition.x,(ballPosition.y-(Math.round(Math.random()))));
@@ -67,14 +72,32 @@ function Stick(id_stick,side,context,autopilot) {
 
 //Draw stick on screen using coordinates
 Stick.prototype.locate = function(x,y){
+
     if (y>(this.context.vpHeight-this.imgObj.height)) y=this.context.vpHeight-this.imgObj.height;
     //this.x=x;this.y=y;
     this.imgObj.style.left = (Math.round(x))+ 'px';
     this.imgObj.style.top = (Math.round(y)) + 'px';
+    if(this.lastY_position !== ""){
+      this.getAceleration();
+      this.lastY_position = this.imgObj.style.top;
+    }
+    else{
+      this.lastY_position = this.imgObj.style.top;
+    }
 };
 
 Stick.prototype.getPosition = function(){
      return {x:parseInt(this.imgObj.style.left),y:parseInt(this.imgObj.style.top)};
 };
+
+Stick.prototype.getAceleration = function(){
+    //using the aceleration formula in pixels / miliseconds
+    var distance = this.lastY_position - this.imgObj.style.top;
+    if( distance < 0){
+      distance *= -1;
+    }
+
+    this.velocity = distance / 8; //8 are the miliseconds that gets an interval
+}
 
 module.exports = Stick;

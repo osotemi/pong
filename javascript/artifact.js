@@ -15,32 +15,49 @@ var Artifact = function (id_artifact,context_) {
   this.state = "stop"; //startdbl,startclick
   this.speed = 7; //1 - 20;
   this.context = context_;
+  //New direcction variables
+  //this.angle = 135;
+  this.travel = [];//Colecction of dots that the ball have to pass to go to the next bouncing ball
+  this.interval = "";
+
   this.imgObj.width = this.context.vpHeight*0.05;
   var self=this; //Artifici per fer funcionar setInterval
   this.getArtifactSelf = function(){return self;};
 
-  this.directions={
-    NORTH:{dirX:0,dirY:-1},
-    SOUTH:{dirX:0,dirY:1},
-    EAST:{dirX:1,dirY:0},
-    WEST:{dirX:-1,dirY:0},
-    NORTH_EAST:{dirX:1,dirY:-1},
-    SOUTH_EAST:{dirX:1,dirY:1},
-    SOUTH_WEST:{dirX:-1,dirY:1},
-    NORTH_WEST:{dirX:-1,dirY:-1},
-  };
 }; //END  Ball prototype constructor
 
 //Heretem de subject (REVIEW IS NOT PROPER)
 Artifact.prototype = new subject();
 
-Artifact.prototype.setDirection = function(CARDINAL_POINT){
-    this.dirX = this.directions[CARDINAL_POINT].dirX;
-    this.dirY = this.directions[CARDINAL_POINT].dirY;
+Artifact.prototype.setDirection = function(){
+    var angle = this.angle;
+    if( 0 < angle && 90 > angle ){
+      this.dirX = +1;
+      this.dirY = -1;
+    }
+    else if( 90 < angle && 180 > angle ){
+      this.dirX = -1;
+      this.dirY = -1;
+    }
+    else if( 180 < angle && 270 > angle ){
+      this.dirX = -1;
+      this.dirY = +1;
+    }
+    else{
+      this.dirX = +1;
+      this.dirY = +1;
+    }
 };
 //Meneja la bola
 Artifact.prototype.move = function(){
-       this.locate(parseInt(this.imgObj.style.left)+(this.dirX*this.speed),parseInt(this.imgObj.style.top)+(this.dirY*this.speed));
+    var travel_size = this.travel.length;
+    var position = this.getPosition();
+    if( this.travel[travel_size -1] !== ""){
+      //locate to the next point of the travel path
+
+    }
+
+    this.locate(parseInt(this.imgObj.style.left)+(this.dirX*this.speed),parseInt(this.imgObj.style.top)+(this.dirY*this.speed));
 }; //End move method
 
 Artifact.prototype.getPosition = function(){
@@ -48,7 +65,8 @@ Artifact.prototype.getPosition = function(){
 };
 
 Artifact.prototype.rebota = function(){
-    this.dirX=this.dirX*(-1);
+    //depends of the angle (asing the oposite angle); if they bounce on a stick or on the top - botton of the screen
+    //this.angle +=
 };
 //Posicionem Bola de manera absoluta en X i Y i comprovem llímits
 Artifact.prototype.locate = function(x,y){
@@ -65,11 +83,24 @@ Artifact.prototype.locate = function(x,y){
     this.Notify(this);
  }; //End locate method
 
+ //calculates the points X, Y that the artifact will follow on this angle
+ Artifact.prototype.getTravelPath = function(){
+   var angle = this.angle;
+   if( 90 < angle && 180 > angle ){
+     //in this  dir, ball will bounce  when x= 0 + stick position + stick width  or y = 0
+     //var C1_module = Math.;
+     var C2_module = this.imgObj.style.top;
+
+
+   }
+ }
+
  //Sortejem direcció i comencem a moure la pola
  Artifact.prototype.start = function(){
     var self=this.getArtifactSelf();
     self.state = "run";
-    self.setDirection("NORTH_WEST");
+    self.setDirection();
+    self.getTravelPath();
     animate=setInterval(function(){self.move();}, 8);
  };
 

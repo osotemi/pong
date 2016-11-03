@@ -27,7 +27,4 @@ window.onload=function(){
     window.onresize = function() {
         context_.restart();
     };
-
-
-
 };
