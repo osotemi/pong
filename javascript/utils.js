@@ -44,7 +44,7 @@ function showPlayerProfile(){
     nicknameElement.innerHTML= user;
     var dataImage = localStorage.getItem('imgData');
     if (dataImage){
-      var profileImg=document.createElement("img");  
+      var profileImg=document.createElement("img");
       profileImg.src = "data:image/png;base64," + dataImage;
       profileImg.width=48;
       profileImg.height=64;
@@ -102,7 +102,7 @@ function getBase64Image(img, final_width, final_height) {
     canvas.height = img.height;
 
     var ctx = canvas.getContext("2d");
-
+    //resize the canvas to draw and save the resized image
     canvas.width = final_width;
     canvas.height = final_height;
 

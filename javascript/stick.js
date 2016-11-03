@@ -22,7 +22,7 @@ function Stick(id_stick,side,context,autopilot) {
   this.side=="left"?this.imgObj.style.left=this.gap+'px':this.imgObj.style.left=this.context.vpWidth-this.imgObj.width-this.gap;
 
   //New variables to calculate ball bouncin
-  this.lastY_position = "";
+  this.lastY_position = "";//on %
   this.velocity = 0;
 
   var self = this;
@@ -79,16 +79,23 @@ Stick.prototype.locate = function(x,y){
     this.imgObj.style.top = (Math.round(y)) + 'px';
     if(this.lastY_position !== ""){
       this.getAceleration();
-      this.lastY_position = this.imgObj.style.top;
+      this.lastY_position = Math.round(this.imgObj.style.top/(this.context.vpHeight/100));
     }
     else{
-      this.lastY_position = this.imgObj.style.top;
+      this.lastY_position = Math.round(this.imgObj.style.top/(this.context.vpHeight/100));
     }
 };
 
 Stick.prototype.getPosition = function(){
      return {x:parseInt(this.imgObj.style.left),y:parseInt(this.imgObj.style.top)};
 };
+
+Stick.prototype.resize = function(){
+  var new_Y_position = Math.round(this.context.vpHeight*(this.lastY_position/100));
+  this.imgObj.height = this.context.vpHeight*0.2;
+  this.side=="left"?this.imgObj.style.left=this.gap+'px':this.imgObj.style.left=this.context.vpWidth-this.imgObj.width-this.gap;
+  this.locate(self.x, new_Y_position);
+}
 
 Stick.prototype.getAceleration = function(){
     //using the aceleration formula in pixels / miliseconds

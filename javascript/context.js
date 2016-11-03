@@ -12,11 +12,11 @@ var artifact = require('./artifact');
 var stick = require('./stick');
 
 function Context(){
-  this.vpWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
-  this.vpHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//ViewportY
   this.score=0;
   this.state = "stop"; //STOP OR RUN
-
+  this.ball = new artifact("bola",this);
+  this.stick = new stick("stick","left",this);
+  this.stick2 = new stick("stick2","right",this,true);
   this.restart();
 
   this.getvpWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
@@ -32,15 +32,15 @@ function Context(){
 }
 Context.prototype.restart = function(){
     //intento actualizar el tamaño de la pantalla si ha havido resize
-    this.vpWidth = this.getvpWidth;
-    this.vpHeight = this.getvpHeight;
-    var ball_pos = "";
+    this.viewPortWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
+    this.viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//ViewportY
     if(this.ball){
       var ball_pos = this.ball.getPosition();
+      this.ball.imgObj.width = this.vpHeight*0.05;
+      this.stick.resize;
+      this.stick2.resize;
     }
-    this.ball = new artifact("bola",this);
-    this.stick = new stick("stick","left",this);
-    this.stick2 = new stick("stick2","right",this,true);
+
     //En este punto pintar la bola con respecto al nuevo tamaño de imagen
     this.ball.locate(((this.vpWidth/2)-(this.ball.imgObj.width/2)), ((this.vpHeight/2)-this.ball.imgObj.height));
 
