@@ -4,14 +4,14 @@
 
 "use strict";
 
-function clearSelection() {
+/*function clearSelection() {
      if(document.selection && document.selection.empty) {
          document.selection.empty();
      } else if(window.getSelection) {
          var sel = window.getSelection();
          sel.removeAllRanges();
      }
- }
+ }*/
 
 function setCookie(cname, cvalue, exdays) {
     if (cvalue && cvalue!== ""){
@@ -57,7 +57,7 @@ function showPlayerProfile(){
   }
 }
 
-function checkCookie(addGameKeyBindings) {
+function checkIfProfileHasBeenDefined(addGameKeyBindings) {
 
     var user = getCookie("username");
     if (user !== "") {
@@ -91,11 +91,13 @@ function checkCookie(addGameKeyBindings) {
         nickname.addEventListener("focus",function(){setCookie("username", nickname.value, 365);});
 
         var imgProfile = document.getElementById("imgProfile");
-        imgProfile.addEventListener("change",function(){readURL(this);});
+        imgProfile.addEventListener("change",function(){readFileAndPreviewFromLocalFileSystem(this);});
     }
     document.getElementById("playerRight").innerHTML= "Computer";
 }
 
+//Encode an image using base64 previously to store it on LocalStorage
+//Note: In HTML the img tag can load an image pointing src attribute to an URL or putting there the image in base64
 function getBase64Image(img, final_width, final_height) {
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
@@ -113,29 +115,16 @@ function getBase64Image(img, final_width, final_height) {
 
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
-/*
-function drawCanvas(img_src){
-  var p1_avatar_img = new Image(img_src);
-  var avatar_img = getBase64Image( p1_avatar_img );
 
-  p1_avatar_img.src = "data:image/png;base64," + avatar_img;
-
-  var canvas = document.createElement("canvas");
-  var context = canvas.getContext('2d');
-  profileImg.width=48;
-  profileImg.height=64;
-
-  context.drawImage(p1_avatar_img, (((vpWidth/100)*21) - p1_avatar_img.width) ,0);
-}
-*/
-function save(){
+//We convert before saving to base64
+function saveImageToLocalStorage(){
   var bannerImage = document.getElementById('blah');
   var imgData = getBase64Image(bannerImage, 48, 64);
   localStorage.setItem("imgData", imgData);
 }
 
-function readURL(input) {
-  var img_element = document.getElementById('blah');
+//We choose a image profile from local system and we do a preview
+function readFileAndPreviewFromLocalFileSystem(input) {
   if (input.files && input.files[0]) {
       img_element.style.display="block";
       var reader = new FileReader();
@@ -143,13 +132,17 @@ function readURL(input) {
         img_element.style.width=48;
         img_element.style.height=64;
         document.getElementById("blah").src=e.target.result;
+<<<<<<< HEAD
         //$('#blah').attr('src', e.target.result);
         save();
 
+=======
+        saveImageToLocalStorage();
+>>>>>>> 9dbc55e3d41fa633650a9d94688681f63bfe1e4d
       };
       reader.readAsDataURL(input.files[0]);
   }
 }
 
- module.exports.clearSelection = clearSelection;
- module.exports.checkCookie = checkCookie;
+ //module.exports.clearSelection = clearSelection;
+ module.exports.checkIfProfileHasBeenDefined = checkIfProfileHasBeenDefined;
