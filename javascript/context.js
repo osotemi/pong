@@ -12,35 +12,32 @@ var ball = require('./ball');
 var stick = require('./stick');
 
 function Context(){
+  this.viewPortWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
+  this.viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//ViewportY
+
   this.score=0;
   this.state = "stop"; //STOP OR RUN
-  this.ball = new artifact("bola",this);
+  this.ball = new ball("bola",this);
   this.stick = new stick("stick","left",this);
   this.stick2 = new stick("stick2","right",this,true);
   this.restart();
 
-  this.getvpWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
-  this.getvpHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//ViewportY
-  /*
-  //We put ball in the middle of the screen
-  this.ball.locate((this.vpWidth/2)-(this.ball.imgObj.width/2),(this.vpHeight/2)-this.ball.imgObj.height);
-  //Vertical dotted separator decoration
-  var verticalSeparator = document.getElementById("vertical");
-  var verticalSeparatorWidth = this.vpWidth * 0.02;
-  verticalSeparator.style="left:"+(this.vpWidth/2-verticalSeparatorWidth/2)+";border-left: "+verticalSeparatorWidth+"px dotted #444; ";
-*/
 }
 
 Context.prototype.restart = function(){
     //intento actualizar el tamaño de la pantalla si ha havido resize
+    var ball_pos = this.ball.getPosition();
+
     this.viewPortWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
     this.viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;//ViewportY
-    if(this.ball){
-      var ball_pos = this.ball.getPosition();
-      this.ball.imgObj.width = this.vpHeight*0.05;
-      this.stick.resize;
-      this.stick2.resize;
-    }
+    //ball resize
+
+    this.ball.imageBallView.width = this.viewPortHeight*0.05;
+    //stick resize
+    var stick_position = this.stick.getPosition();
+    this.stick.resize(stick_position);
+    var stick_position = this.stick2.getPosition();
+    this.stick2.resize(stick_position);
 
     //We put ball in the middle of the screen
     this.ball.locate((this.viewPortWidth/2)-(this.ball.imageBallView.width/2),(this.viewPortHeight/2)-this.ball.imageBallView.height);
@@ -48,7 +45,6 @@ Context.prototype.restart = function(){
     var verticalSeparator = document.getElementById("vertical");
     var verticalSeparatorWidth = this.viewPortWidth * 0.02;
     verticalSeparator.style="left:"+(this.viewPortWidth/2-verticalSeparatorWidth/2)+";border-left: "+verticalSeparatorWidth+"px dotted #444; ";
-
 };
 
 Context.prototype.start = function(){

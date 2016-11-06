@@ -23,7 +23,6 @@ function Stick(id_stick,sideLocation,context,autopilot) {
   this.sideLocation == "left"?this.imageStickView.style.left=this.gap+'px':this.imageStickView.style.left=this.context.viewPortWidth-this.imageStickView.width-this.gap;
 
   //New variables to calculate ball bouncin
-  this.lastY_position = "";//on %
   this.velocity = 0;
 
   var self = this;
@@ -78,10 +77,10 @@ Stick.prototype.locate = function(x,y){
     this.imageStickView.style.top = (Math.round(y)) + 'px';
     if(this.lastY_position !== ""){
       this.getAceleration();
-      this.lastY_position = Math.round(this.imgObj.style.top/(this.context.vpHeight/100));
+      this.lastY_position = Math.round(this.imageStickView.style.top/(this.context.viewPortHeight/100)) || 0;
     }
     else{
-      this.lastY_position = Math.round(this.imgObj.style.top/(this.context.vpHeight/100));
+      this.lastY_position = Math.round(this.imageStickView.style.top/(this.context.viewPortHeight/100)) || 0;
     }
 };
 
@@ -90,21 +89,27 @@ Stick.prototype.getPosition = function(){
      return {x:parseInt(this.imageStickView.style.left),y:parseInt(this.imageStickView.style.top)};
 };
 
-Stick.prototype.resize = function(){
-  var new_Y_position = Math.round(this.context.vpHeight*(this.lastY_position/100));
-  this.imgObj.height = this.context.vpHeight*0.2;
-  this.side=="left"?this.imgObj.style.left=this.gap+'px':this.imgObj.style.left=this.context.vpWidth-this.imgObj.width-this.gap;
-  this.locate(self.x, new_Y_position);
+Stick.prototype.resize = function(old_position){
+  var resize_positionX = 0;
+  //var newY_position = Math.round(this.context.viewPortHeight * percentageYposition);
+  this.imageStickView.height = this.context.viewPortHeight*0.2;
+  this.sideLocation =="left"?resize_positionX = this.gap:resize_positionX = this.context.viewPortWidth-this.imageStickView.width-this.gap;
+  this.imageStickView.style.left = resize_positionX +'px';
+  //this.sideLocation =="left"?this.imageStickView.style.left=this.gap+'px':this.imageStickView.style.left=this.context.viewPortHeight-this.imageStickView.width-this.gap;
+
+  this.locate(resize_positionX, old_position.y);
 }
 
 Stick.prototype.getAceleration = function(){
     //using the aceleration formula in pixels / miliseconds
-    var distance = this.lastY_position - this.imgObj.style.top;
+    /*
+    var distance = this.lastY_position - this.imageStickView.style.top;
     if( distance < 0){
       distance *= -1;
     }
 
     this.velocity = distance / 8; //8 are the miliseconds that gets an interval
+    */
 }
 
 module.exports = Stick;

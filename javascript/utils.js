@@ -132,13 +132,8 @@ function readFileAndPreviewFromLocalFileSystem(input) {
         img_element.style.width=48;
         img_element.style.height=64;
         document.getElementById("blah").src=e.target.result;
-<<<<<<< HEAD
-        //$('#blah').attr('src', e.target.result);
-        save();
 
-=======
         saveImageToLocalStorage();
->>>>>>> 9dbc55e3d41fa633650a9d94688681f63bfe1e4d
       };
       reader.readAsDataURL(input.files[0]);
   }
