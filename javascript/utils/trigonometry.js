@@ -22,7 +22,7 @@ function calculateVectorPath( bouncingData, ballSpeed ) {
     var repetitions = parseInt(Math.round(bouncingData.hypotenuseValue / ballSpeed));
     var vectorPath = [];
     for( var i = 0; i < repetitions; i++){
-        vectorPath.push({ x: (bouncingData.initPointData.x + (bouncingData.coordinatesDirection.x * i * parseInt(bouncingData.cateto1mod / repetitions))), y: (bouncingData.initPointData.y + (bouncingData.coordinatesDirection.y * i * parseInt(bouncingData.cateto2mod / repetitions)))});
+        vectorPath.push({ x: (bouncingData.initPointData.x + (bouncingData.coordinatesDirection.x * i * (1+parseInt(bouncingData.cateto1mod / repetitions)))), y: (bouncingData.initPointData.y + (bouncingData.coordinatesDirection.y * i * (1+parseInt(bouncingData.cateto2mod / repetitions))))});
     }
     return vectorPath;
 }
@@ -32,10 +32,10 @@ function bouncingTop( initPoint, angle ) {
   var bouncingPoint = {};
 
   if(angle < 90){
-    bouncingPoint.x = initPoint.x - Math.round(initPoint.y/Math.tan(angle));
+    bouncingPoint.x = initPoint.x + Math.round(initPoint.y / Math.tan(angle*Math.PI/180));
     bouncingPoint.y = 0;
   } else {
-    bouncingPoint.x = initPoint.x - Math.round(initPoint.y/Math.tan(angle - 90));;
+    bouncingPoint.x = initPoint.x - Math.round(initPoint.y / Math.tan((angle - 90)*Math.PI/180));
     bouncingPoint.y = 0;
   }
   return bouncingPoint;
@@ -74,14 +74,14 @@ function calculateBouncing( initPoint, angle, context ) {
         //Calculates the left side screen hit point
         bouncingPointCoordinate = bouncingLeft(initPoint, angle);
         reboundAngle = 180 - angle;
-        cateto1 = context.viewPortWidth -  initPoint.x;
-        cateto2 = initPoint.y - bouncingPointCoordinate.y;
+        cateto2 = context.viewPortWidth -  initPoint.x;
+        cateto1 = initPoint.y - bouncingPointCoordinate.y;
         hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
       }
       else{//The ball goes top side before hit the right of the screen
         reboundAngle = 360 - angle;
-        cateto1 = initPoint.y;
-        cateto2 = bouncingPointCoordinate.x - initPoint.x;
+        cateto2 = initPoint.y;
+        cateto1 = bouncingPointCoordinate.x - initPoint.x;
         hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
       }
 
