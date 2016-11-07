@@ -35,7 +35,7 @@ function bouncingTop( initPoint, angle ) {
     bouncingPoint.x = initPoint.x + Math.round(initPoint.y / Math.tan(angle*Math.PI/180));
     bouncingPoint.y = 0;
   } else {
-    bouncingPoint.x = initPoint.x - Math.round(initPoint.y / Math.tan((angle - 90)*Math.PI/180));
+    bouncingPoint.x = initPoint.x - Math.round(initPoint.y / Math.tan((180 - angle)*Math.PI/180));
     bouncingPoint.y = 0;
   }
   return bouncingPoint;
@@ -46,11 +46,31 @@ function bouncingBottom( initPoint, angle, viewPortHeight ) {
 }
 
 function bouncingLeft( initPoint, angle ) {
+  var bouncingPoint = {};
 
+  if(angle < 180){
+    bouncingPoint.x = 0;
+    bouncingPoint.y = initPoint.y - Math.round(initPoint.x * (((180 - angle) * Math.PI)/180));
+  } else {
+    angle = 360 - angle;
+    bouncingPoint.x = 0;
+    bouncingPoint.y = initPoint.y + Math.round(initPoint.x * ((angle * Math.PI)/180));
+  }
+  return bouncingPoint;
 }
 
 function bouncingRight( initPoint, angle, viewPortWidth ) {
+  var bouncingPoint = {};
 
+  if(angle < 90){
+    bouncingPoint.x = viewPortWidth;
+    bouncingPoint.y = initPoint.y - Math.round((viewPortWidth - initPoint.x) * ((angle * Math.PI)/180));
+  } else if( angle > 270 ){
+    angle = 360 - angle;
+    bouncingPoint.x = viewPortWidth;
+    bouncingPoint.y = initPoint.y + Math.round((viewPortWidth - initPoint.x) * ((angle * Math.PI)/180));
+  }
+  return bouncingPoint;
 }
 /* Function that returns boucing point, angle, hipotenusa
 *  initPoint {x:a, y:b}
@@ -69,13 +89,13 @@ function calculateBouncing( initPoint, angle, context ) {
       direction.y = -1;
       //First calculates the point where y = 0 (hit the top of the screem)
       bouncingPointCoordinate = bouncingTop(initPoint, angle);
-      //The ball goes right side out before hit the top of the screen
+      //The ball goes right side out before hit the screen top
       if(bouncingPointCoordinate.x > context.viewPortWidth ){
-        //Calculates the left side screen hit point
-        bouncingPointCoordinate = bouncingLeft(initPoint, angle);
+        //Calculates the right side screen hit point
+        bouncingPointCoordinate = bouncingRight(initPoint, angle, context.viewPortWidth);
         reboundAngle = 180 - angle;
-        cateto2 = context.viewPortWidth -  initPoint.x;
-        cateto1 = initPoint.y - bouncingPointCoordinate.y;
+        cateto1 = context.viewPortWidth -  initPoint.x;
+        cateto2 = initPoint.y - bouncingPointCoordinate.y;
         hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
       }
       else{//The ball goes top side before hit the right of the screen
@@ -85,9 +105,26 @@ function calculateBouncing( initPoint, angle, context ) {
         hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
       }
 
-    } else if(angle > 0 && angle < 90){
+    } else if(angle > 90 && angle < 180){
       direction.x = -1;
       direction.y = -1;
+      //First calculates the point where y = 0 (hit the top of the screem)
+      bouncingPointCoordinate = bouncingTop(initPoint, angle);
+      //The ball goes left side out before hit the screen top
+      if(bouncingPointCoordinate.x < 0 ){
+        //Calculates the left side screen hit point
+        bouncingPointCoordinate = bouncingLeft(initPoint, angle);
+        reboundAngle = 180 - angle;
+        cateto1 = initPoint.x;
+        cateto2 = initPoint.y - bouncingPointCoordinate.y;
+        hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
+      }
+      else{//The ball goes top side before hit the left of the screen
+        reboundAngle = 360 - angle;
+        cateto2 = initPoint.y;
+        cateto1 = initPoint.x - bouncingPointCoordinate.x;
+        hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
+      }
     } else if(angle > 0 && angle < 90){
       direction.x = -1;
       direction.y = +1;

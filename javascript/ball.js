@@ -85,7 +85,7 @@ Ball.prototype.locate = function(x,y){
     var initPoint = self.getPosition();
     self.state = "run";
     self.setDirection("NORTH_WEST");
-    self.bouncingAngle = 25;
+    self.bouncingAngle = parseInt(Math.round(Math.random()*180));
     self.currentBouncingPath = trigonometry.calculateBouncing(initPoint, self.bouncingAngle, self.context);
 
     animate=setInterval(function(){self.move();}, 8);
