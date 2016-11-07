@@ -1,0 +1,52 @@
+/*Pong general style */
+
+
+/*Modal form style */
+.overlay{
+     display: none;
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: #000;
+     z-index:1001;
+     opacity:.75;
+     -moz-opacity: 0.75;
+     filter: alpha(opacity=75);
+}
+
+.modal {
+     display: none;
+     position: absolute;
+     top: 25%;
+     left: 25%;
+     width: 50%;
+     height: 50%;
+     padding: 16px;
+     background: #fff;
+     color: #333;
+     z-index:1002;
+     overflow: auto;
+}
+.close-button{
+  position: relative;
+  height: auto;
+  text-align: right !important;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.game-canvas{
+  height: 15%;
+  width: 100%;
+  padding-top: 2%;
+}
+
+#light_welcome{
+  text-align: center;
+}
+
+#close_welcome{
+  margin-bottom: 5%;
+}

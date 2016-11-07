@@ -27,4 +27,5 @@ window.onload=function(){
     window.onresize = function() {
         GameContext_.restart();
     };
+
 };
