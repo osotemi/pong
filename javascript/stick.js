@@ -89,9 +89,9 @@ Stick.prototype.getPosition = function(){
      return {x:parseInt(this.imageStickView.style.left),y:parseInt(this.imageStickView.style.top)};
 };
 
-Stick.prototype.resize = function(old_position){
+Stick.prototype.resize = function(old_position, percentageYposition){
   var resize_positionX = 0;
-  //var newY_position = Math.round(this.context.viewPortHeight * percentageYposition);
+  var resize_positionY = Math.round(this.context.viewPortWidth * (percentageYposition/100));
   this.imageStickView.height = this.context.viewPortHeight*0.2;
   this.sideLocation =="left"?resize_positionX = this.gap:resize_positionX = this.context.viewPortWidth-this.imageStickView.width-this.gap;
   this.imageStickView.style.left = resize_positionX +'px';

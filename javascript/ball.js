@@ -8,6 +8,7 @@
  "use strict";
 var animate = undefined;
 var subject = require('./patterns/observer/Subject');
+var trigonometry = require('./utils/trigonometry');
 
 var Ball = function (id_Ball,context_) {
 
@@ -16,6 +17,11 @@ var Ball = function (id_Ball,context_) {
   this.speed = 7; //1 - 20;
   this.context = context_;
   this.imageBallView.width = this.context.viewPortHeight*0.05;
+  //Variables for Bresenham bouncin
+  this.bouncingAngle = 0;
+  this.currentBouncingPath = [];
+  this.pathIndex = 0;
+
   var self = this; //Artifici per fer funcionar setInterval
   this.getBallSelf = function(){return self;};
 
@@ -41,7 +47,10 @@ Ball.prototype.setDirection = function(CARDINAL_POINT){
 
 //We move the ball to the next point
 Ball.prototype.move = function(){
-       this.locate(parseInt(this.imageBallView.style.left)+(this.dirX*this.speed),parseInt(this.imageBallView.style.top)+(this.dirY*this.speed));
+    var self = this.getBallSelf();
+
+    this.locate(parseInt(this.currentBouncingPath[self.pathIndex].x),parseInt(this.currentBouncingPath[self.pathIndex].y));
+    self.pathIndex++;
 };
 
 //Get ball coordinates
@@ -73,8 +82,12 @@ Ball.prototype.locate = function(x,y){
  //We should RAMDOMLY (NOT YET) choose ball direction and start moving from her current position
  Ball.prototype.start = function(){
     var self = this.getBallSelf();
+    var initPoint = self.getPosition();
     self.state = "run";
     self.setDirection("NORTH_WEST");
+    self.bouncingAngle = 85;
+    self.currentBouncingPath = trigonometry.calculateBouncing(initPoint, self.bouncingAngle, self.context);
+
     animate=setInterval(function(){self.move();}, 8);
  };
 

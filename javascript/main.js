@@ -4,7 +4,7 @@
  */
 "use strict";
 
-var utils = require('./utils');
+var utils = require('./utils/utils');
 //Prototype where all game objects are present and could be accessed
 var singletonContext = require('./patterns/singleton/singletonContext');
 

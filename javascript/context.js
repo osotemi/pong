@@ -35,9 +35,10 @@ Context.prototype.restart = function(){
     this.ball.imageBallView.width = this.viewPortHeight*0.05;
     //stick resize
     var stick_position = this.stick.getPosition();
-    this.stick.resize(stick_position);
+    var positionY_percent = Math.round(stick_position.y/(this.viewPortHeight/100));
+    this.stick.resize(stick_position, positionY_percent);
     var stick_position = this.stick2.getPosition();
-    this.stick2.resize(stick_position);
+    this.stick2.resize(stick_position, positionY_percent);
 
     //We put ball in the middle of the screen
     this.ball.locate((this.viewPortWidth/2)-(this.ball.imageBallView.width/2),(this.viewPortHeight/2)-this.ball.imageBallView.height);
