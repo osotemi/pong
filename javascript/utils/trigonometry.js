@@ -42,7 +42,16 @@ function bouncingTop( initPoint, angle ) {
 }
 
 function bouncingBottom( initPoint, angle, viewPortHeight ) {
+  var bouncingPoint = {};
 
+  if(angle < 270){
+    bouncingPoint.x = initPoint.x - Math.round(initPoint.y / Math.tan((angle - 180) * Math.PI/180));
+    bouncingPoint.y = viewPortHeight;
+  } else {
+    bouncingPoint.x = initPoint.x + Math.round(initPoint.y / Math.tan((angle - 180) *Math.PI/180));
+    bouncingPoint.y = viewPortHeight;
+  }
+  return bouncingPoint;
 }
 
 function bouncingLeft( initPoint, angle ) {
@@ -52,9 +61,8 @@ function bouncingLeft( initPoint, angle ) {
     bouncingPoint.x = 0;
     bouncingPoint.y = initPoint.y - Math.round(initPoint.x * (((180 - angle) * Math.PI)/180));
   } else {
-    angle = 360 - angle;
     bouncingPoint.x = 0;
-    bouncingPoint.y = initPoint.y + Math.round(initPoint.x * ((angle * Math.PI)/180));
+    bouncingPoint.y = initPoint.y + Math.round(initPoint.x * (((angle - 180) * Math.PI)/180));
   }
   return bouncingPoint;
 }
@@ -125,17 +133,51 @@ function calculateBouncing( initPoint, angle, context ) {
         cateto1 = initPoint.x - bouncingPointCoordinate.x;
         hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
       }
-    } else if(angle > 0 && angle < 90){
+    } else if(angle > 180 && angle < 270){
       direction.x = -1;
       direction.y = +1;
+      //First calculates the point where y = view Port height (hit the screen bottom)
+      bouncingPointCoordinate = bouncingBottom(initPoint, angle, context.viewPortHeight);
+      //The ball goes left side out before hit the screen bottom
+      if(bouncingPointCoordinate.x < 0 ){
+        //Calculates the left side screen hit point
+        bouncingPointCoordinate = bouncingLeft(initPoint, angle);
+        reboundAngle = 360 - (angle - 180);
+        cateto1 = initPoint.x;
+        cateto2 = bouncingPointCoordinate.y - initPoint.y;
+        hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
+      }
+      else{//The ball goes bottom side before hit the left of the screen
+        reboundAngle = 360 - angle;
+        cateto2 = initPoint.y;
+        cateto1 = initPoint.x - bouncingPointCoordinate.x;
+        hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
+      }
     } else {// 270 < angle >360
       direction.x = +1;
       direction.y = +1;
+      //First calculates the point where y = view Port height (hit the screen bottom)
+      bouncingPointCoordinate = bouncingBottom(initPoint, angle, context.viewPortHeight);
+      //The ball goes right side out before hit the screen bottom
+      if(bouncingPointCoordinate.x > context.viewPortWidth ){
+        //Calculates the right side screen hit point
+        bouncingPointCoordinate = bouncingRight(initPoint, angle, context.viewPortWidth);
+        reboundAngle = 360 - (angle - 180);
+        cateto1 = context.viewPortWidth - initPoint.x;
+        cateto2 = bouncingPointCoordinate.y - initPoint.y;
+        hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
+      }
+      else{//The ball goes bottom side before hit the right screen side
+        reboundAngle = 180 + (360 - angle);
+        cateto2 = initPoint.y;
+        cateto1 = initPoint.x - bouncingPointCoordinate.x;
+        hypotenuse = calculatePythagorasTheorem( cateto1, cateto2);
+      }
     }
+    context.ball.nextAngle = reboundAngle;
     var bouncingData = {
       initPointData: initPoint,
       bouncingPoint : bouncingPointCoordinate,
-      bouncingAngle: reboundAngle,
       hypotenuseValue : hypotenuse,
       coordinatesDirection : direction,
       cateto1mod: cateto1,
