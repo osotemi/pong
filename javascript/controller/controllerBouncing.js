@@ -22,7 +22,7 @@ function calculateVectorPath( bouncingData, ballSpeed ) {
     var repetitions = parseInt(Math.round(bouncingData.hypotenuseValue / ballSpeed));
     var vectorPath = [];
     for( var i = 0; i < repetitions; i++){
-        vectorPath.push({ x: (bouncingData.initPointData.x + (bouncingData.coordinatesDirection.x * i * (1+parseInt(bouncingData.cateto1mod / repetitions)))), y: (bouncingData.initPointData.y + (bouncingData.coordinatesDirection.y * i * (1+parseInt(bouncingData.cateto2mod / repetitions))))});
+        vectorPath.push({ x: (bouncingData.initPointData.x + (bouncingData.coordinatesDirection.x * i * parseInt(bouncingData.cateto1mod / repetitions))), y: (bouncingData.initPointData.y + (bouncingData.coordinatesDirection.y * i * parseInt(bouncingData.cateto2mod / repetitions)))});
     }
     return vectorPath;
 }

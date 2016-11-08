@@ -8,7 +8,7 @@
  "use strict";
 var animate = undefined;
 var subject = require('./patterns/observer/Subject');
-var trigonometry = require('./utils/trigonometry');
+var controllerBouncing = require('./controller/controllerBouncing');
 
 var Ball = function (id_Ball,context_) {
 
@@ -48,7 +48,6 @@ Ball.prototype.setDirection = function(CARDINAL_POINT){
 //We move the ball to the next point
 Ball.prototype.move = function(){
     var self = this.getBallSelf();
-
     this.locate(parseInt(this.currentBouncingPath[self.pathIndex].x),parseInt(this.currentBouncingPath[self.pathIndex].y));
     self.pathIndex++;
 };
@@ -60,23 +59,26 @@ Ball.prototype.getPosition = function(){
 
 //Simply change direction sense. If we implement multi direction ball it should be a little bit more complicated
 Ball.prototype.bounce = function(){
-    this.dirX=this.dirX*(-1);
+    var self = this.getBallSelf();
+    var initPoint = self.getPosition();
+    self.bouncingAngle = self.nextAngle;
+    self.currentBouncingPath = controllerBouncing.calculateBouncing(initPoint, self.bouncingAngle, self.context);
 };
 
 //We put ball in X,Y coordinates and check boundaries in order to change direction
 Ball.prototype.locate = function(x,y){
-    //Ball get out of boundaries from top or bottom
-    if (y<=0 || y>=this.context.viewPortHeight-this.imageBallView.height) {
-        this.dirY=this.dirY*(-1);
-    }
-    //Ball get out of boundaries on right or left side
-    if (x<=0 || x>=this.context.viewPortWidth-this.imageBallView.width) this.dirX=this.dirX*(-1);
+    var self = this.getBallSelf();
 
+    if( y < 0 || y > self.context.viewPortHeight){
+      self.bounce();
+    }
+    //If the ball is in the first 20% of the screen or 80% ahead; notify position
+    if( x < (self.viewPortHeight*0.2) ||  (x > self.viewPortHeight*0.2)){
+      //Ball notifies all observers she has been moving to the next point (SOLVED: IT COULD BE OPTIMIZED)
+      this.Notify(this);
+    }
     this.imageBallView.style.left = (Math.round(x))+ 'px';
     this.imageBallView.style.top = (Math.round(y)) + 'px';
-
-    //Ball notifies all observers she has been moving to the next point (WARNING: IT COULD BE OPTIMIZED)
-    this.Notify(this);
  };
 
  //We should RAMDOMLY (NOT YET) choose ball direction and start moving from her current position
@@ -87,7 +89,7 @@ Ball.prototype.locate = function(x,y){
     self.setDirection("NORTH_WEST");
     self.bouncingAngle = parseInt(Math.round(Math.random()*360));
 
-    self.currentBouncingPath = trigonometry.calculateBouncing(initPoint, self.bouncingAngle, self.context);
+    self.currentBouncingPath = controllerBouncing.calculateBouncing(initPoint, self.bouncingAngle, self.context);
 
     animate=setInterval(function(){self.move();}, 8);
  };

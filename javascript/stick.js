@@ -71,17 +71,11 @@ function Stick(id_stick,sideLocation,context,autopilot) {
 
 //Draw and locate stick on screen using x,y coordinates
 Stick.prototype.locate = function(x,y){
-
     if (y>(this.context.viewPortHeight-this.imageStickView.height)) y=this.context.viewPortHeight-this.imageStickView.height;
+    
     this.imageStickView.style.left = (Math.round(x))+ 'px';
     this.imageStickView.style.top = (Math.round(y)) + 'px';
-    if(this.lastY_position !== ""){
-      this.getAceleration();
-      this.lastY_position = Math.round(this.imageStickView.style.top/(this.context.viewPortHeight/100)) || 0;
-    }
-    else{
-      this.lastY_position = Math.round(this.imageStickView.style.top/(this.context.viewPortHeight/100)) || 0;
-    }
+
 };
 
 //Get stick x,y position on screen
