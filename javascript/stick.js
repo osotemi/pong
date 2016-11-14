@@ -56,8 +56,10 @@ function Stick(id_stick,sideLocation,context,autopilot) {
           var distance = Math.abs((stickPosition.y+this.imageStickView.height/2)-(ballPosition.y+ball.imageBallView.height/2));
           var minDistAllowed = (this.imageStickView.height/2+ball.imageBallView.height/2);
           if (distance < minDistAllowed) {
-                ball.bounce();
+            ball.bounce();
+
           }else{
+            //NOTE crate cases for score
             if ((ballPosition.x < this.gap) || (ballPosition.x > this.context.viewPortWidth - this.gap)){
                 this.context.stop();
                 alert("Game OVER");
@@ -72,7 +74,7 @@ function Stick(id_stick,sideLocation,context,autopilot) {
 //Draw and locate stick on screen using x,y coordinates
 Stick.prototype.locate = function(x,y){
     if (y>(this.context.viewPortHeight-this.imageStickView.height)) y=this.context.viewPortHeight-this.imageStickView.height;
-    
+
     this.imageStickView.style.left = (Math.round(x))+ 'px';
     this.imageStickView.style.top = (Math.round(y)) + 'px';
 

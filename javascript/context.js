@@ -42,7 +42,7 @@ Context.prototype.restart = function(){
 
     //We put ball in the middle of the screen
     this.ball.locate((this.viewPortWidth/2)-(this.ball.imageBallView.width/2),(this.viewPortHeight/2)-this.ball.imageBallView.height);
-    this.ball.start();
+    //this.ball.start();
     //Vertical dotted separator decoration
     var verticalSeparator = document.getElementById("vertical");
     var verticalSeparatorWidth = this.viewPortWidth * 0.02;

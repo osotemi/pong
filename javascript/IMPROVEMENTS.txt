@@ -1,0 +1,11 @@
+IMPLEMENTED IMPROVEMENTS
+========================
+
+-> Random pixeled angle initialitation
+
+PROJECTED IMPROVEMENTS
+========================
+
+-> Stick Bounce angle variation
+-> Socore implementation
+-> Model welcome form to set level [easy -> speed = 1, normal -> speed = 2, hard -> speed = 3]
