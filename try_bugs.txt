@@ -1,0 +1,16 @@
+BUgs a provar por si acaso salieran en el exámen:
+- Al pulsar espacio; la bola sortea el angulo:
+SOL{  archivo: ,
+      linea:,
+      solucion:
+}
+- Preguntar nivel al iniciar:
+SOL{  archivo: ,
+      linea:,
+      solucion:
+}
+- Posible problema:
+SOL{  archivo: ,
+      linea:,
+      solucion:
+}

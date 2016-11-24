@@ -33,7 +33,10 @@ function Stick(id_stick,sideLocation,context,autopilot) {
       //this.imageStickView.style.left=this.context.viewPortWidth-this.imageStickView.width-this.gap;
       this.locate(this.context.viewPortWidth-this.imageStickView.width-this.gap,Math.round(this.context.viewPortHeight/2));
   }
+  //"ghost" variable to remove drag and drop image;
   var dragGhost = {};
+  /**  Create a clone of the stick (with content), hide and place it into the
+  DOM tree and finally set dragGhot image to drag image  */
   this.startDraggingStick = function(event) {
       self.autopilot = false;
       dragGhost = self.imageStickView.cloneNode(true);
@@ -41,34 +44,26 @@ function Stick(id_stick,sideLocation,context,autopilot) {
       document.body.appendChild(dragGhost);
       event.dataTransfer.setDragImage(dragGhost, 0, 0);
   };
-  var self = this;
-  //Variable to remove drag and drop image;
-
+    var self = this;
+  /** We move stick on y axis following mouse pointer location */
+  this.stickMovesWithMouseMovement = function(e){
+      var y= (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+      self.locate(self.x,y);
+  };
   /** We inherit from observer using this functional mixin its a formality because Observer is a kind of abstract class */
   //withObserver.call(Stick.prototype);
   /** We enroll stick as a ball observer */
   //this.context.ball.AddObserver(this);
   if (! this.autopilot){
-      /** We move stick on y axis following mouse pointer location */
-      window.addEventListener("mousemove",
-        function(e){
-          var y= (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-          self.locate(self.x,y);
-      },false);
+
+      window.addEventListener("mousemove", function(){ self.stickMovesWithMouseMovement(event);} ,false);
   }
   else{
-
+      //asing drag and drop events
       self.imageStickView.setAttribute("draggable", true);
-      /**
-      Create a clone of the stick (with content), hide and place it into the
-      DOM tree and finally set dragGhot image to drag image
-      */
       self.imageStickView.addEventListener("dragstart", function(){self.startDraggingStick(event);} ,false);
 
-      self.imageStickView.addEventListener("drag", function(e){
-        var y= (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-        self.locate(self.x,y);
-      }, false);
+      self.imageStickView.addEventListener("drag", function(){ self.stickMovesWithMouseMovement(event);}, false);
       self.imageStickView.addEventListener("dragend", function(event) {
         self.autopilot = true;
         dragGhost.parentNode.removeChild(dragGhost);
