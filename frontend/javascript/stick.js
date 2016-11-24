@@ -33,13 +33,21 @@ function Stick(id_stick,sideLocation,context,autopilot) {
       //this.imageStickView.style.left=this.context.viewPortWidth-this.imageStickView.width-this.gap;
       this.locate(this.context.viewPortWidth-this.imageStickView.width-this.gap,Math.round(this.context.viewPortHeight/2));
   }
-
+  var dragGhost = {};
+  this.startDraggingStick = function(event) {
+      self.autopilot = false;
+      dragGhost = self.imageStickView.cloneNode(true);
+      dragGhost.style.visibility = "hidden";
+      document.body.appendChild(dragGhost);
+      event.dataTransfer.setDragImage(dragGhost, 0, 0);
+  };
   var self = this;
+  //Variable to remove drag and drop image;
+
   /** We inherit from observer using this functional mixin its a formality because Observer is a kind of abstract class */
   //withObserver.call(Stick.prototype);
   /** We enroll stick as a ball observer */
   //this.context.ball.AddObserver(this);
-
   if (! this.autopilot){
       /** We move stick on y axis following mouse pointer location */
       window.addEventListener("mousemove",
@@ -47,6 +55,24 @@ function Stick(id_stick,sideLocation,context,autopilot) {
           var y= (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
           self.locate(self.x,y);
       },false);
+  }
+  else{
+
+      self.imageStickView.setAttribute("draggable", true);
+      /**
+      Create a clone of the stick (with content), hide and place it into the
+      DOM tree and finally set dragGhot image to drag image
+      */
+      self.imageStickView.addEventListener("dragstart", function(){self.startDraggingStick(event);} ,false);
+
+      self.imageStickView.addEventListener("drag", function(e){
+        var y= (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+        self.locate(self.x,y);
+      }, false);
+      self.imageStickView.addEventListener("dragend", function(event) {
+        self.autopilot = true;
+        dragGhost.parentNode.removeChild(dragGhost);
+      }, false);
   }
 
   /** As an Observer we should implement this mandatory method. Called
