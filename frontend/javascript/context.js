@@ -21,6 +21,18 @@ function Context(){
   this.getContextSelf = function(){return self;};
   if (this.stick.autopilot && this.stick2.autopilot) this.start();
 }
+
+Context.prototype.showBanner = function( bannerMessage, miliseconds){
+  var bannerElement = document.getElementById("banner");
+  bannerElement.style.display = "block";
+  bannerElement.innerHTML = "<p>" + bannerMessage +"</p>";
+  if(miliseconds >0) window.setTimeout( this.hideBanner(), miliseconds);
+}
+
+Context.prototype.hideBanner = function(){
+  document.getElementById("banner").style.display = "none";
+}
+
 /** Restart pong game after a resizing event*/
 Context.prototype.restart = function(){
     this.viewPortWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth; //ViewportX
@@ -81,18 +93,17 @@ Context.prototype.processAI = function(stick_){
     var iamRightStickAndBallIsCloseAndTowardsMe = (stick_.sideLocation === "right" && (this.ball.ballX > (this.viewPortWidth/2)) && (this.ball.ballVx > 0) );
 
     if (iamLeftStickAndBallIsCloseAndTowardsMe || iamRightStickAndBallIsCloseAndTowardsMe) {
-                var timeTilCollision = ((this.viewPortWidth-stick_.gap-stick_.imageStickView.width) - this.ball.ballX) / (this.ball.ballVx);
-                if (stick_.sideLocation === "left") timeTilCollision = ((stick_.imageStickView.width+stick_.gap) - this.ball.ballX) / (this.ball.ballVx);
-
-                var distanceWanted = (stickPos.y+(stick_.imageStickView.height/2)) - (this.ball.ballY+(this.ball.imageBallView.width/2));
-                var velocityWanted = -distanceWanted / timeTilCollision;
-                if(velocityWanted > StickMAXSPEED)
-                    stickVy = StickMAXSPEED;
-                else if(velocityWanted < -StickMAXSPEED)
-                    stickVy = -StickMAXSPEED;
-                else
-                    stickVy = velocityWanted*3;
-                stick_.locate(stickPos.x,stick_.stickY + stickVy);
+        var timeTilCollision = ((this.viewPortWidth-stick_.gap-stick_.imageStickView.width) - this.ball.ballX) / (this.ball.ballVx);
+        if (stick_.sideLocation === "left") timeTilCollision = ((stick_.imageStickView.width+stick_.gap) - this.ball.ballX) / (this.ball.ballVx);
+        var distanceWanted = (stickPos.y+(stick_.imageStickView.height/2)) - (this.ball.ballY+(this.ball.imageBallView.width/2));
+        var velocityWanted = -distanceWanted / timeTilCollision;
+        if(velocityWanted > StickMAXSPEED)
+            stickVy = StickMAXSPEED;
+        else if(velocityWanted < -StickMAXSPEED)
+            stickVy = -StickMAXSPEED;
+        else
+            stickVy = velocityWanted*3;
+        stick_.locate(stickPos.x,stick_.stickY + stickVy);
     }
 };
 
