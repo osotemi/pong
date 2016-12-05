@@ -20,7 +20,7 @@ window.onload=function(){
 
     var startOrStopGame=function(event){
         if (GameContext_.state.match("run")){
-          GameContext_.stop();
+          GameContext_.stop();          
         }else{
           GameContext_.start();
         }
@@ -29,6 +29,8 @@ window.onload=function(){
      If there is not profile we can not start the game otherwise we can start or stop the game pressing any key */
     utils.checkIfProfileHasBeenDefined(function(){  window.addEventListener("keypress",startOrStopGame,false);});
     /** On windows resize event we restart context to resize and realocate game elements into the new viewport */
+    /** set banner init message */
+    GameContext_.showBanner("Drag any of the stick bar if you wanna play");
     window.onresize = function() {
         GameContext_.restart();
     };

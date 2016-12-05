@@ -26,7 +26,7 @@ Context.prototype.showBanner = function( bannerMessage, miliseconds){
   var bannerElement = document.getElementById("banner");
   bannerElement.style.display = "block";
   bannerElement.innerHTML = "<p>" + bannerMessage +"</p>";
-  if(miliseconds >0) window.setTimeout( this.hideBanner(), miliseconds);
+  if(miliseconds >0) window.setTimeout( function(){this.hideBanner()} , miliseconds);
 }
 
 Context.prototype.hideBanner = function(){
@@ -70,7 +70,8 @@ Context.prototype.start = function(){
 Context.prototype.stop = function(){
     this.state = "stop";
     clearTimeout(animate);
-    if (this.stick.autopilot && this.stick2.autopilot) this.start();
+    this.showBanner( "Press space key to play", 5000 );
+    //if (this.stick.autopilot && this.stick2.autopilot) this.start();
 };
 
 /** Animate one new game frame */

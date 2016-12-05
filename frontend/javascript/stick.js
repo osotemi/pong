@@ -39,6 +39,7 @@ function Stick(id_stick,sideLocation,context,autopilot) {
   DOM tree and finally set dragGhot image to drag image  */
   this.startDraggingStick = function(event) {
       self.autopilot = false;
+      context.hideBanner();
       dragGhost = self.imageStickView.cloneNode(true);
       dragGhost.style.visibility = "hidden";
       document.body.appendChild(dragGhost);
